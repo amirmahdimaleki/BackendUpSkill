@@ -39,15 +39,49 @@
 //  * -----------------------------------------------------------------
 // ! event and emitter
 
-// in event emitters order matters : 1-on 2-emit
-const EventEmitter = require('events')
+// // in event emitters order matters : 1-on 2-emit
+// const EventEmitter = require('events')
 
-const myEmitter = new EventEmitter()
+// const myEmitter = new EventEmitter()
 
- myEmitter.on('Birth', (num, name)=>{
-    console.table({
-        hello:`${name} with ${num} years old`
+//  myEmitter.on('Birth', (num, name)=>{
+//     console.table({
+//         hello:`${name} with ${num} years old`
+//     })
+//  })
+
+// myEmitter.emit('Birth', 12, "juju")
+
+// * -------------------------------------------------------------------
+// ! stream
+
+// const {createReadStream} = require('fs')
+// //                                          -> options obj
+// const stream = createReadStream('./README.md', {highWaterMark:1000, encoding:'utf-8'})
+
+// stream.on('data', (res)=>{ 
+//     console.warn(res)
+// })
+
+// stream.on('error', (result)=>{
+//     console.log(result)
+// })
+
+// * ------------------------------------------------------------------
+// ! stream real usage
+
+const fs = require('fs')
+const http = require('http')
+
+http.createServer((req, res)=>{
+    const fileStream = fs.createReadStream('./README.md', 'utf-8')
+    fileStream.on('open', ()=>{
+
+        fileStream.pipe(res)
     })
- })
+    fileStream.on('error', (err)=>{
 
-myEmitter.emit('Birth', 12, "juju")
+        res.end(err)
+    })
+})
+.listen(5000)
