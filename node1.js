@@ -39,15 +39,15 @@
 //  * -----------------------------------------------------------------
 // ! event and emitter
 
-
+// in event emitters order matters : 1-on 2-emit
 const EventEmitter = require('events')
 
 const myEmitter = new EventEmitter()
 
- myEmitter.on('Birth', ()=>{
+ myEmitter.on('Birth', (num, name)=>{
     console.table({
-        hello:"world"
+        hello:`${name} with ${num} years old`
     })
  })
 
-myEmitter.emit('Birth')
+myEmitter.emit('Birth', 12, "juju")
